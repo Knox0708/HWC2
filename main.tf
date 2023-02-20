@@ -17,8 +17,8 @@ terraform {
 
 provider aws {
   region     = "us-east-1"
-    access_key = AKIAS5SKF73IX2I4LXFR # Might need .aws_access_key
-    secret_key = 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 # Might need .aws_secret_key
+    # access_key = AKIAS5SKF73IX2I4LXFR.aws_access_key
+    # secret_key = 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.aws_secret_key
 }
 
 # provider "logstash" {
