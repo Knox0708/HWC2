@@ -17,8 +17,8 @@ terraform {
 
 provider aws {
   region     = "us-east-1"
-    access_key = AKIAS5SKF73IX2I4LXFR # Might need .aws_access_key
-    secret_key = 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 # Might need .aws_secret_key
+    # access_key = AKIAS5SKF73IX2I4LXFR.aws_access_key
+    # secret_key = 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.aws_secret_key
 }
 
 # provider "logstash" {
@@ -70,24 +70,28 @@ filename = "tf-key-pair"
 
 
 
-# # Configure Logstash input
-# resource "logstash_input_file" "input" {
-#   path = "*.log" #Need to add log.files
-# }
 
-# # Configure Logstash output
-# resource "logstash_output_file" "output" {
-#   path = "stashOutput.log"
-# }
+resource "local_file" "logstash_config" {
+  content  = <<EOF
+input {
+  file {
+    path => "/var/log/nginx/access.log"
+  }
+}
 
-# # Configure Logstash pipeline
-# resource "logstash_pipeline" "Attempt" {
-#   config {
-#     input {
-#       plugin = logstash_input_file.input.id
-#     }
-#     output {
-#       plugin = logstash_output_file.output.id
-#     }
-#   }
-# }
+output {
+  file {
+    path => "/var/log/logstash/access.log"
+  }
+}
+EOF
+  filename = "logstash.conf"
+}
+
+resource "aws_ssm_parameter" "logstash_config" {
+  name  = "/logstash/config"
+  type  = "String"
+  value = local_file.logstash_config.content
+}
+
+
