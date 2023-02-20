@@ -39,7 +39,7 @@ resource "aws_security_group" "Default" {
   ingress {
     from_port   = 22
     to_port     = 22
-    protocol    = "ssh"
+    protocol    = "tcp"
     cidr_blocks = ["86.22.208.224/32"] #My IP?
   }
 }
@@ -66,24 +66,24 @@ filename = "tf-key-pair"
 
 
 
-# Configure Logstash input
-resource "logstash_input_file" "input" {
-  path = "/path/to/input/folder/*.log" #Need to add log.files
-}
+# # Configure Logstash input
+# resource "logstash_input_file" "input" {
+#   path = "/path/to/input/folder/*.log" #Need to add log.files
+# }
 
-# Configure Logstash output
-resource "logstash_output_file" "output" {
-  path = "/path/to/output/folder/output.log"
-}
+# # Configure Logstash output
+# resource "logstash_output_file" "output" {
+#   path = "/path/to/output/folder/output.log"
+# }
 
-# Configure Logstash pipeline
-resource "logstash_pipeline" "example" {
-  config {
-    input {
-      plugin = logstash_input_file.input.id
-    }
-    output {
-      plugin = logstash_output_file.output.id
-    }
-  }
-}
+# # Configure Logstash pipeline
+# resource "logstash_pipeline" "example" {
+#   config {
+#     input {
+#       plugin = logstash_input_file.input.id
+#     }
+#     output {
+#       plugin = logstash_output_file.output.id
+#     }
+#   }
+# }
