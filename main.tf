@@ -61,24 +61,24 @@ filename = "tf-key-pair"
 
 
 
-# # Configure Logstash input
-# resource "logstash_input_file" "input" {
-#   path = "/path/to/input/folder/*.log" #Need to add log.files
-# }
+# Configure Logstash input
+resource "logstash_input_file" "input" {
+  path = "*.log" #Need to add log.files
+}
 
-# # Configure Logstash output
-# resource "logstash_output_file" "output" {
-#   path = "/path/to/output/folder/output.log"
-# }
+# Configure Logstash output
+resource "logstash_output_file" "output" {
+  path = "stashOutput.log"
+}
 
-# # Configure Logstash pipeline
-# resource "logstash_pipeline" "example" {
-#   config {
-#     input {
-#       plugin = logstash_input_file.input.id
-#     }
-#     output {
-#       plugin = logstash_output_file.output.id
-#     }
-#   }
-# }
+# Configure Logstash pipeline
+resource "logstash_pipeline" "Attempt" {
+  config {
+    input {
+      plugin = logstash_input_file.input.id
+    }
+    output {
+      plugin = logstash_output_file.output.id
+    }
+  }
+}
