@@ -19,7 +19,7 @@ resource "aws_instance" "example" {
   ami           = "ami-2757f631"
   instance_type = "t2.micro"
   key_name = "tf-key-pair"
-  user_data = file(sudoLogin.sh, LogstashInstall.sh)
+  user_data = file("LogstashInstall.sh")
 
   
 
@@ -40,4 +40,3 @@ resource "local_file" "tf-key-pair" {
 content  = tls_private_key.rsa.private_key_pem
 filename = "tf-key-pair"
 }
-
