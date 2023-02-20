@@ -61,11 +61,6 @@ filename = "tf-key-pair"
 
 
 
-
-
-
-
-
 # # Configure Logstash input
 # resource "logstash_input_file" "input" {
 #   path = "/path/to/input/folder/*.log" #Need to add log.files
