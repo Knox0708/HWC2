@@ -4,6 +4,11 @@ terraform {
       source  = "hashicorp/aws"
       version = "~> 4.16"
     }
+    logstash = {
+      source  = "hashicorp/logstash"
+    version = "3.0.0"
+    url     = "https://registry.terraform.io/providers/hashicorp/logstash"
+}
   }
 
   required_version = ">= 1.2.0"
@@ -13,6 +18,10 @@ terraform {
 
 provider aws {
   region     = "us-east-1"
+}
+
+provider "logstash" {
+  endpoint = "http://localhost:9600"
 }
 
 resource "aws_instance" "example" {
@@ -58,10 +67,6 @@ content  = tls_private_key.rsa.private_key_pem
 filename = "tf-key-pair"
 }
 
-#Logstash Provider
-provider "logstash" {
-  endpoint = "http://logstash.example.com:9600"
-}
 
 
 # Configure Logstash input
