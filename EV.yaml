@@ -1,0 +1,11 @@
+- hosts: localhost
+  become: true
+  tasks:
+    - name: Set environment variable
+      ansible.builtin.set_fact:
+        hello_world_message: "Hello World"
+
+    - name: Write log output to file
+      ansible.builtin.command: python /HW.py
+      environment:
+        HW: "{{ hello_world_message }}"
