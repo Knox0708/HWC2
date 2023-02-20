@@ -6,8 +6,8 @@ terraform {
     }
     logstash = {
       source  = "hashicorp/logstash"
-    version = "3.0.0"
-    url     = "https://registry.terraform.io/providers/hashicorp/logstash"
+      version = "3.0.0"
+      url     = "https://registry.terraform.io/providers/hashicorp/logstash"
 }
   }
 
