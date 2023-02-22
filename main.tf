@@ -28,11 +28,33 @@ resource "aws_instance" "example" {
   key_name = "tf-key-pair"
   user_data = file("LogstashInstall.sh")
 
-    # vpc_security_group_ids = [aws_security_group.Default.id]
+  vpc_security_group_ids = [aws_security_group.Default.id]
   
 
    tags = {
     Name = "ExampleAppServerInstance"
+  }
+
+    provisioner "file" {
+    source      = "HW.py"
+    destination = "/home/ubuntu/HW.py"
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("tf-key-pair")
+      host        = aws_instance.example.public_ip
+    }
+  }
+
+  provisioner "file" {
+    source      = "LogstashInstall.sh"
+    destination = "/home/ubuntu/LogstashInstall.sh"
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("tf-key-pair")
+      host        = aws_instance.example.public_ip
+    }
   }
 }
 
@@ -73,27 +95,27 @@ filename = "tf-key-pair"
 
 
 
-# resource "local_file" "logstash_config" {
-#   content  = <<EOF
-# input {
-#   file {
-#     path => "/var/log/nginx/access.log"
-#   }
-# }
-# output {
-#   file {
-#     path => "/var/log/logstash/access.log"
-#   }
-# }
-# EOF
-#   filename = "logstash.conf"
-# }
+resource "local_file" "logstash_config" {
+  content  = <<EOF
+input {
+  file {
+    path => "/var/log/nginx/access.log"
+  }
+}
+output {
+  file {
+    path => "/var/log/logstash/access.log"
+  }
+}
+EOF
+  filename = "logstash.conf"
+}
 
-# resource "aws_ssm_parameter" "logstash_config" {
-#   name  = "/logstash/config"
-#   type  = "String"
-#   value = local_file.logstash_config.content
-# }
+resource "aws_ssm_parameter" "logstash_config" {
+  name  = "/logstash/config"
+  type  = "String"
+  value = local_file.logstash_config.content
+}
 
 
 
