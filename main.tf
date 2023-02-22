@@ -29,20 +29,9 @@ resource "aws_instance" "example" {
   user_data = file("LogstashInstall.sh")
 
     # vpc_security_group_ids = [aws_security_group.Default.id]
-
-    provisioner "file" {
-    source      = "HW.py"
-    destination = "/home/ubuntu/HW.py"
-    }
-
-    provisioner "file" {
-    source      = "LogstashInstall.sh"
-    destination = "/home/ubuntu/LogstashInstall.sh"
-    }
-
   
 
-  tags = {
+   tags = {
     Name = "ExampleAppServerInstance"
   }
 }
@@ -57,6 +46,13 @@ resource "aws_security_group" "Default" {
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["86.22.208.224/32"] #My IP?
+  }
+
+    egress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["86.22.208.224/32"]
   }
 }
 
@@ -77,27 +73,28 @@ filename = "tf-key-pair"
 
 
 
-resource "local_file" "logstash_config" {
-  content  = <<EOF
-input {
-  file {
-    path => "/var/log/nginx/access.log"
-  }
-}
-output {
-  file {
-    path => "/var/log/logstash/access.log"
-  }
-}
-EOF
-  filename = "logstash.conf"
-}
+# resource "local_file" "logstash_config" {
+#   content  = <<EOF
+# input {
+#   file {
+#     path => "/var/log/nginx/access.log"
+#   }
+# }
+# output {
+#   file {
+#     path => "/var/log/logstash/access.log"
+#   }
+# }
+# EOF
+#   filename = "logstash.conf"
+# }
 
-resource "aws_ssm_parameter" "logstash_config" {
-  name  = "/logstash/config"
-  type  = "String"
-  value = local_file.logstash_config.content
-}
+# resource "aws_ssm_parameter" "logstash_config" {
+#   name  = "/logstash/config"
+#   type  = "String"
+#   value = local_file.logstash_config.content
+# }
+
 
 
 #JVM options - to change the amount of memory used by Logstash (should be small)
