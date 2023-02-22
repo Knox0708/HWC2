@@ -17,8 +17,8 @@ terraform {
 
 provider "aws" {
   region     = "us-east-1"
-  access_key = AKIAS5SKF73IX2I4LXFR                     # Might need .aws_access_key
-  secret_key = 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 # Might need .aws_secret_key
+  # access_key = AKIAS5SKF73IX2I4LXFR                     # Might need .aws_access_key
+  # secret_key = FyvGStLJJHu4suNuNdknhdon6e6ls6Ugzt1YPd8D # Might need .aws_secret_key
 }
 
 
@@ -37,7 +37,7 @@ resource "aws_instance" "example" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = file("tf-key-pair")
+      private_key = aws_key_pair.tf-key-pair.private_key_pem
       host        = self.public_ip
     }
   }
@@ -49,7 +49,7 @@ resource "aws_instance" "example" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = file("tf-key-pair")
+      private_key = aws_key_pair.tf-key-pair.private_key_pem
       host        = self.public_ip
     }
   }
