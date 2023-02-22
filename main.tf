@@ -17,8 +17,8 @@ terraform {
 
 provider aws {
   region     = "us-east-1"
-    access_key = AKIAS5SKF73IX2I4LXFR # Might need .aws_access_key
-    secret_key = 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 # Might need .aws_secret_key
+    # access_key = AKIAS5SKF73IX2I4LXFR # Might need .aws_access_key
+    # secret_key = FyvGStLJJHu4suNuNdknhdon6e6ls6Ugzt1YPd8D # Might need .aws_secret_key
 }
 
 
@@ -28,7 +28,7 @@ resource "aws_instance" "example" {
   key_name = "tf-key-pair"
   user_data = file("LogstashInstall.sh")
 
-    vpc_security_group_ids = [aws_security_group.Default.id]
+    # vpc_security_group_ids = [aws_security_group.Default.id]
 
     provisioner "file" {
     source      = "HW.py"
