@@ -75,28 +75,6 @@ filename = "tf-key-pair"
 
 
 
-resource "local_file" "logstash_config" {
-  content  = <<EOF
-input {
-  file {
-    path => "/var/log/nginx/access.log"
-  }
-}
-output {
-  file {
-    path => "/var/log/logstash/access.log"
-  }
-}
-EOF
-  filename = "logstash.conf"
-}
-
-resource "aws_ssm_parameter" "logstash_config" {
-  name  = "/logstash/config"
-  type  = "String"
-  value = local_file.logstash_config.content
-}
-
 
 
 #JVM options - to change the amount of memory used by Logstash (should be small)
