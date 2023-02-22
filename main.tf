@@ -15,32 +15,45 @@ terraform {
 
 
 
-provider aws {
+provider "aws" {
   region     = "us-east-1"
-    access_key = AKIAS5SKF73IX2I4LXFR # Might need .aws_access_key
-    secret_key = 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 # Might need .aws_secret_key
+  access_key = AKIAS5SKF73IX2I4LXFR                     # Might need .aws_access_key
+  secret_key = FyvGStLJJHu4suNuNdknhdon6e6ls6Ugzt1YPd8D # Might need .aws_secret_key
 }
 
 
 resource "aws_instance" "example" {
   ami           = "ami-2757f631"
   instance_type = "t2.micro"
-  key_name = "tf-key-pair"
-  user_data = file("LogstashInstall.sh")
+  key_name      = "tf-key-pair"
+  user_data     = file("LogstashInstall.sh")
 
-    vpc_security_group_ids = [aws_security_group.Default.id]
+  vpc_security_group_ids = [aws_security_group.Default.id]
 
-    provisioner "file" {
+  provisioner "file" {
     source      = "HW.py"
     destination = "/home/ubuntu/HW.py"
-    }
 
-    provisioner "file" {
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("tf-key-pair")
+      host        = self.public_ip
+    }
+  }
+
+  provisioner "file" {
     source      = "LogstashInstall.sh"
     destination = "/home/ubuntu/LogstashInstall.sh"
-    }
 
-  
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("tf-key-pair")
+      host        = self.public_ip
+    }
+  }
+
 
   tags = {
     Name = "ExampleAppServerInstance"
@@ -62,16 +75,16 @@ resource "aws_security_group" "Default" {
 
 #Keys are below
 resource "aws_key_pair" "tf-key-pair" {
-key_name = "tf-key-pair"
-public_key = tls_private_key.rsa.public_key_openssh
+  key_name   = "tf-key-pair"
+  public_key = tls_private_key.rsa.public_key_openssh
 }
 resource "tls_private_key" "rsa" {
-algorithm = "RSA"
-rsa_bits  = 4096
+  algorithm = "RSA"
+  rsa_bits  = 4096
 }
 resource "local_file" "tf-key-pair" {
-content  = tls_private_key.rsa.private_key_pem
-filename = "tf-key-pair"
+  content  = tls_private_key.rsa.private_key_pem
+  filename = "tf-key-pair"
 }
 
 
