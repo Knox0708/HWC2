@@ -1,44 +1,50 @@
 #!/bin/bash
 
+chmod +x /path/to/logstashInstall.sh
+
+
 #This is a script to install Logstash
 
 # /Users/Michael.Knox/documents/HWC2/Logstash/LogstashInstall.sh
 
-echo "Installing Yum"
-sudo yum update -y
-sudo yum install -y java-1.8.0-openjdk
-java -version
-
-echo "importing signing key"
-sudo rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
 
 
+echo "Installing Logstash Public Signing Key"
+sudo wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elastic-keyring.gpg
 
 
-echo "Logging into sudo"
-sudo su
+echo "Debian Key"
+sudo apt-get install apt-transport-https
 
-echo "Downloading Logstash"
-sudo rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+echo "Saving Repo Definition"
+echo "deb [signed-by=/usr/share/keyrings/elastic-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-8.x.list
+
+echo "Updating repo and Installing logstash"
+sudo apt-get update && sudo apt-get install logstash
 
 
-echo "Adding Repo File"
 
-sudo vim /etc/yum.repos.d/logstash.repo
-[logstash-8.x]
-name=Elastic repository for 8.x packages
-baseurl=https://artifacts.elastic.co/packages/8.x/yum
-gpgcheck=1
-gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
-enabled=1
-autorefresh=1
-type=rpm-md
 
-cat /etc/yum.repos.d/logstash.repo
 
-echo "installing Logstash onto EC2"
+echo "Installing Beats Public Signing Key"
+sudo wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
 
-sudo yum install -y logstash
+echo "Debian"
+sudo apt-get install apt-transport-https
+
+echo "Saving repo definition"
+echo "deb https://artifacts.elastic.co/packages/8.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-8.x.list
+
+echo "Installing Filebeat"
+sudo apt-get update && sudo apt-get install filebeat
+
+
+echo "Installation Complete"
 
 echo "starting Logstash"
-sudo systemctl start logstash
+sudo systemctl start logstash.service
+
+echo "configuring auto-boot"
+sudo systemctl enable filebeat
+
+

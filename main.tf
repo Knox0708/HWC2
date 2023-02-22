@@ -26,14 +26,16 @@ resource "aws_instance" "example" {
   ami           = "ami-2757f631"
   instance_type = "t2.micro"
   key_name = "tf-key-pair"
-  user_data = file("LogstashInstall.sh")
+  user_data = file("logstashInstall.sh")
 
-    # vpc_security_group_ids = [aws_security_group.Default.id]
+  vpc_security_group_ids = [aws_security_group.Default.id]
   
 
    tags = {
     Name = "ExampleAppServerInstance"
   }
+
+
 }
 
 #Security Groups
@@ -73,27 +75,27 @@ filename = "tf-key-pair"
 
 
 
-# resource "local_file" "logstash_config" {
-#   content  = <<EOF
-# input {
-#   file {
-#     path => "/var/log/nginx/access.log"
-#   }
-# }
-# output {
-#   file {
-#     path => "/var/log/logstash/access.log"
-#   }
-# }
-# EOF
-#   filename = "logstash.conf"
-# }
+resource "local_file" "logstash_config" {
+  content  = <<EOF
+input {
+  file {
+    path => "/var/log/nginx/access.log"
+  }
+}
+output {
+  file {
+    path => "/var/log/logstash/access.log"
+  }
+}
+EOF
+  filename = "logstash.conf"
+}
 
-# resource "aws_ssm_parameter" "logstash_config" {
-#   name  = "/logstash/config"
-#   type  = "String"
-#   value = local_file.logstash_config.content
-# }
+resource "aws_ssm_parameter" "logstash_config" {
+  name  = "/logstash/config"
+  type  = "String"
+  value = local_file.logstash_config.content
+}
 
 
 
