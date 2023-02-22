@@ -21,9 +21,6 @@ provider aws {
     secret_key = FyvGStLJJHu4suNuNdknhdon6e6ls6Ugzt1YPd8D # Might need .aws_secret_key
 }
 
-# provider "logstash" {
-#   source = "hashicorp/logstash"
-# }
 
 resource "aws_instance" "example" {
   ami           = "ami-2757f631"
@@ -33,6 +30,15 @@ resource "aws_instance" "example" {
 
     vpc_security_group_ids = [aws_security_group.Default.id]
 
+    provisioner "file" {
+    source      = "HW.py"
+    destination = "/home/ubuntu/HW.py"
+    }
+
+    provisioner "file" {
+    source      = "LogstashInstall.sh"
+    destination = "/home/ubuntu/LogstashInstall.sh"
+    }
 
   
 
