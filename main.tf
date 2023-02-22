@@ -26,7 +26,7 @@ resource "aws_instance" "example" {
   ami           = "ami-2757f631"
   instance_type = "t2.micro"
   key_name = "tf-key-pair"
-  user_data = file("LogstashInstall.sh")
+  user_data = file("logstashInstall.sh")
 
   vpc_security_group_ids = [aws_security_group.Default.id]
   
@@ -35,27 +35,7 @@ resource "aws_instance" "example" {
     Name = "ExampleAppServerInstance"
   }
 
-    provisioner "file" {
-    source      = "HW.py"
-    destination = "/home/ubuntu/HW.py"
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = file("tf-key-pair")
-      host        = aws_instance.example.public_ip
-    }
-  }
 
-  provisioner "file" {
-    source      = "LogstashInstall.sh"
-    destination = "/home/ubuntu/LogstashInstall.sh"
-    connection {
-      type        = "ssh"
-      user        = "ubuntu"
-      private_key = file("tf-key-pair")
-      host        = aws_instance.example.public_ip
-    }
-  }
 }
 
 #Security Groups
