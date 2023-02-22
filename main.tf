@@ -93,3 +93,5 @@ resource "aws_ssm_parameter" "logstash_config" {
   value = local_file.logstash_config.content
 }
 
+
+#JVM options - to change the amount of memory used by Logstash (should be small)
