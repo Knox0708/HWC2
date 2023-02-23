@@ -23,11 +23,10 @@ provider aws {
 
 
 resource "aws_instance" "example" {
-  ami           = "ami-2757f631"
+  ami           = "ami-0dfcb1ef8550277af"
   instance_type = "t2.micro"
   key_name = "tf-key-pair"
-  user_data = file("logstashInstall.sh")
-
+  user_data = file("StartupScript.sh")
   vpc_security_group_ids = [aws_security_group.Default.id]
   
 
