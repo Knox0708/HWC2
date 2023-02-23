@@ -1,7 +1,7 @@
 {
   "version": 4,
   "terraform_version": "1.3.7",
-  "serial": 360,
+  "serial": 373,
   "lineage": "e88bee35-27ef-55ca-0e73-178369b7e59a",
   "outputs": {},
   "resources": [
@@ -12,11 +12,10 @@
       "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
       "instances": [
         {
-          "status": "tainted",
           "schema_version": 1,
           "attributes": {
             "ami": "ami-2757f631",
-            "arn": "arn:aws:ec2:us-east-1:488811952251:instance/i-0ab2b3a652c4c6fd9",
+            "arn": "arn:aws:ec2:us-east-1:488811952251:instance/i-0b0836604e4b9f0d3",
             "associate_public_ip_address": true,
             "availability_zone": "us-east-1e",
             "capacity_reservation_specification": [
@@ -47,7 +46,7 @@
             "host_id": "",
             "host_resource_group_arn": null,
             "iam_instance_profile": "",
-            "id": "i-0ab2b3a652c4c6fd9",
+            "id": "i-0b0836604e4b9f0d3",
             "instance_initiated_shutdown_behavior": "stop",
             "instance_state": "running",
             "instance_type": "t2.micro",
@@ -74,8 +73,8 @@
             "password_data": "",
             "placement_group": "",
             "placement_partition_number": 0,
-            "primary_network_interface_id": "eni-018ec10ae45d5533a",
-            "private_dns": "ip-172-31-62-155.ec2.internal",
+            "primary_network_interface_id": "eni-04cd839d66bc52b78",
+            "private_dns": "ip-172-31-50-167.ec2.internal",
             "private_dns_name_options": [
               {
                 "enable_resource_name_dns_a_record": false,
@@ -83,9 +82,9 @@
                 "hostname_type": "ip-name"
               }
             ],
-            "private_ip": "172.31.62.155",
-            "public_dns": "ec2-54-236-50-252.compute-1.amazonaws.com",
-            "public_ip": "54.236.50.252",
+            "private_ip": "172.31.50.167",
+            "public_dns": "ec2-100-26-217-200.compute-1.amazonaws.com",
+            "public_ip": "100.26.217.200",
             "root_block_device": [
               {
                 "delete_on_termination": true,
@@ -95,7 +94,7 @@
                 "kms_key_id": "",
                 "tags": {},
                 "throughput": 0,
-                "volume_id": "vol-02ff92db8c68bece6",
+                "volume_id": "vol-08be55fc51e6174a5",
                 "volume_size": 8,
                 "volume_type": "gp2"
               }
@@ -114,7 +113,7 @@
             },
             "tenancy": "default",
             "timeouts": null,
-            "user_data": "5a6a8b2f8605da9c443538622d3e646a7723ef08",
+            "user_data": "afa045738b728d096c538a77e225e1515ead1172",
             "user_data_base64": null,
             "user_data_replace_on_change": false,
             "volume_tags": null,
@@ -147,7 +146,7 @@
             "key_pair_id": "key-0ed04c173a8fad420",
             "key_type": "rsa",
             "public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCzC/6XbibZhKQDrJ/PM8LrCQBv8+zbgho2ezvBDxkT1zJghwAcb7Qyqa8P8vaEe5USJJNuCsP+UQzEu3aqAPNv5HTN9efsPPizACXOAUg5Adz67BiDa+Ms9FHE3hHsR9tEdsdWbfrppc2O0L+ECdlAyNAvTBwX77bIohS6fuKSmaIJNPV0bkjoTCIPfsrBjmvtN75umvz62Bwr55+u1yAeAEr8RI4bFmc3hMhk1hB6rSUSFBHGDx5Y+kejGF1XrY1NHwX4l0asnr59xF7lyECImzQopScv9CTsnc7jgqfMip7OwGcn60BEgxz7GzUUMSqLrpwLpB9XWROs99Q6u9Ybm4p8nBLzTsiHMGDO+8nURBfQy6qkXl0hsrcRue/x8+NlckPj/vfYQ0RBu+dvi3d7/ATLS2EfJhxJilQe833XS7UHBjgQz/LaraCRt942VqsvZ/YdCyKlCYuW97JHM+LDR4+9i286WLk9hPSD6NmFGJtlidpcsctB4snGwE9xjXwb8KR94P34rfA3uw9797g6X298hBiKKQAQTRCXReBuStjuMxWbpTn7FSnlcYaYIiN879Tl9A8s/Rkp/FajJptsd1srJWKuF+71J6WHtjahndow66y97tjOGslDMXD63XMtLLCyo/KboiLYXWf5n6z3kJQSypjf+FV+A6NdNmrYKw==",
-            "tags": null,
+            "tags": {},
             "tags_all": {}
           },
           "sensitive_attributes": [],
@@ -204,7 +203,7 @@
             "name_prefix": "Default",
             "owner_id": "488811952251",
             "revoke_rules_on_delete": false,
-            "tags": null,
+            "tags": {},
             "tags_all": {},
             "timeouts": null,
             "vpc_id": "vpc-01c157ed8f91e99d6"
@@ -232,7 +231,7 @@
             "key_id": "",
             "name": "/filebeat/config",
             "overwrite": null,
-            "tags": null,
+            "tags": {},
             "tags_all": {},
             "tier": "Standard",
             "type": "String",
@@ -265,7 +264,7 @@
             "key_id": "",
             "name": "/logstash/config",
             "overwrite": null,
-            "tags": null,
+            "tags": {},
             "tags_all": {},
             "tier": "Standard",
             "type": "String",
@@ -333,12 +332,12 @@
         {
           "schema_version": 0,
           "attributes": {
-            "content": "#!/bin/bash\n\nchmod +x /path/to/logstashInstall.sh\n\n\n#This is a script to install Logstash\n\n# /Users/Michael.Knox/documents/HWC2/Logstash/LogstashInstall.sh\n\n\n\necho \"Installing Logstash Public Signing Key\"\nsudo wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elastic-keyring.gpg\n\n\necho \"Debian Key\"\nsudo apt-get install apt-transport-https\n\necho \"Saving Repo Definition\"\necho \"deb [signed-by=/usr/share/keyrings/elastic-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main\" | sudo tee -a /etc/apt/sources.list.d/elastic-8.x.list\n\necho \"Updating repo and Installing logstash\"\nsudo apt-get update \u0026\u0026 sudo apt-get install logstash\n\n\n",
+            "content": "#!/bin/bash\n\nchmod +x /path/to/logstashInstall.sh\n\n\n#This is a script to install Logstash\n\n# /Users/Michael.Knox/documents/HWC2/Logstash/LogstashInstall.sh\n\necho \"Installing Logstash Public Signing Key\"\nwget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo gpg --dearmor -o /usr/share/keyrings/elastic-keyring.gpg\n\n\necho \"Debian Key\"\napt-get install apt-transport-https\n\necho \"Saving Repo Definition\"\necho \"deb [signed-by=/usr/share/keyrings/elastic-keyring.gpg] https://artifacts.elastic.co/packages/8.x/apt stable main\" | sudo tee -a /etc/apt/sources.list.d/elastic-8.x.list\n\necho \"Updating repo and Installing logstash\"\napt-get update \u0026\u0026 apt-get install logstash\n\n\n",
             "content_base64": null,
             "directory_permission": "0777",
             "file_permission": "0777",
             "filename": "logstashInstall.sh",
-            "id": "afa045738b728d096c538a77e225e1515ead1172",
+            "id": "b42d0e60d7f19810f38299a18b2a02391160d94a",
             "sensitive_content": null,
             "source": null
           },
@@ -388,13 +387,12 @@
           "status": "tainted",
           "schema_version": 0,
           "attributes": {
-            "id": "8545857099775341789",
+            "id": "1097026382947298962",
             "triggers": null
           },
           "sensitive_attributes": [],
           "dependencies": [
-            "aws_ssm_parameter.filebeat_config",
-            "local_file.filebeat_config"
+            "aws_ssm_parameter.filebeat_config"
           ]
         }
       ]
