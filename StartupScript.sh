@@ -1,5 +1,7 @@
 #!/bin/bash
 
+
+
 # Install Java
 yum update -y
 yum install -y java-1.8.0-openjdk
@@ -28,19 +30,28 @@ input {
   }
 }
 
+filter {
+  grok {
+    match => { "message" => "%{GREEDYDATA:Hello World}" }
+  }
+}
+
 output {
   elasticsearch {
     hosts => ["localhost:9200"]
+  }
+  file {
+    path => /etc/logstash/outputHW.log
   }
 }
 EOF
 
 cat << EOF > /etc/filebeat/filebeat.yml
 filebeat.inputs:
-- type: log
+- type: filestream
   enabled: true
   paths:
-    - /var/log/*.log
+    - /etc/logstash/inputHW.log
 
 output.elasticsearch:
   hosts: ["localhost:9200"]
@@ -51,3 +62,10 @@ systemctl enable logstash.service
 systemctl start logstash.service
 systemctl enable filebeat.service
 systemctl start filebeat.service
+
+#Setup Output File
+
+#Insert log
+echo "Hello World" > /etc/logstash/inputHW.log
+#Setup Output File
+touch /etc/logstash/outputHW.log

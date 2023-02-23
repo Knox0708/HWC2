@@ -63,6 +63,19 @@ resource "aws_security_group" "Default" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  ingress {
+    from_port   = 9600
+    to_port     = 9600
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 5044
+    to_port     = 5044
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
   
   #outbound rules
   egress {
@@ -70,6 +83,8 @@ resource "aws_security_group" "Default" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+  
+  
   }
 }
 
