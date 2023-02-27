@@ -52,8 +52,8 @@ filebeat.inputs:
   enabled: true
   paths:
     - /etc/logstash/inputHW.log
-output.elasticsearch:
-  hosts: ["localhost:9200"]
+output.logstash:
+  hosts: ["172.31.13.104:5044"]
 EOF
 
 # Enable and start Logstash and Filebeat services
