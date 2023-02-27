@@ -1,3 +1,5 @@
+
+
 #!/bin/bash
 
 
@@ -29,13 +31,11 @@ input {
     port => 5044
   }
 }
-
 filter {
   grok {
     match => { "message" => "%{GREEDYDATA:Hello World}" }
   }
 }
-
 output {
   elasticsearch {
     hosts => ["localhost:9200"]
@@ -52,7 +52,6 @@ filebeat.inputs:
   enabled: true
   paths:
     - /etc/logstash/inputHW.log
-
 output.elasticsearch:
   hosts: ["localhost:9200"]
 EOF

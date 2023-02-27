@@ -64,6 +64,22 @@ resource "aws_security_group" "Default" {
     cidr_blocks = ["0.0.0.0/0"]
   }
   
+    ingress {
+    description = "ESearch"
+    from_port   = 9200
+    to_port     = 9200
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+   
+    ingress {
+    description = "FBeat"
+    from_port   = 5044
+    to_port     = 5044
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  
   #outbound rules
   egress {
     from_port   = 0
