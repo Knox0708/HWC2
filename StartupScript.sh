@@ -8,6 +8,26 @@
 yum update -y
 yum install -y java-1.8.0-openjdk
 
+# Install Elasticsearch
+rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+tee /etc/yum.repos.d/elasticsearch.repo <<EOF
+[elasticsearch-7.x]
+name=Elasticsearch repository for 7.x packages
+baseurl=https://artifacts.elastic.co/packages/7.x/yum
+gpgcheck=1
+gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+enabled=1
+autorefresh=1
+type=rpm-md
+EOF
+yum install -y elasticsearch
+
+# Configure Elasticsearch
+sed -i 's/#network.host: 192.168.0.1/network.host: localhost/g' /etc/elasticsearch/elasticsearch.yml
+systemctl daemon-reload
+systemctl enable elasticsearch.service
+systemctl start elasticsearch.service
+
 # Install Logstash
 rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
 echo "[logstash-7.x]
@@ -52,6 +72,7 @@ filebeat.inputs:
 output.logstash:
   hosts: ["localhost:5044"]
 EOF
+
 
 # Enable and start Logstash and Filebeat services
 systemctl enable logstash.service
