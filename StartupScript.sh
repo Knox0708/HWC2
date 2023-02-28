@@ -31,17 +31,14 @@ input {
     port => 5044
   }
 }
-filter {
-  grok {
-    match => { "message" => "%{GREEDYDATA:Hello World}" }
-  }
+# filter {
+#   grok {
+#     match => { "message" => "%{GREEDYDATA:Hello World}" }
+#   }
 }
 output {
   elasticsearch {
     hosts => ["localhost:9200"]
-  }
-  file {
-    path => /etc/logstash/outputHW.log
   }
 }
 EOF
