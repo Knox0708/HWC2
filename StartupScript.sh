@@ -35,7 +35,7 @@ input {
 #   grok {
 #     match => { "message" => "%{GREEDYDATA:Hello World}" }
 #   }
-}
+#}
 output {
   elasticsearch {
     hosts => ["localhost:9200"]
