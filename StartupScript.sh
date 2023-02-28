@@ -26,21 +26,22 @@ yum install -y elasticsearch
 yum install kibana -y
 
 
-kibanayaml="server.port: 5601
-server.host: 'localhost'
-
-elasticsearch.hosts: ['http://localhost:9200']
-elasticsearch.username: '"hwc"'
-elasticsearch.password: '""'
-"
-echo "$kibanayaml" > /etc/kibana/kibana.yml
-
 
 # Configure Elasticsearch
 sed -i 's/#network.host: 192.168.0.1/network.host: 0.0.0.0/g' /etc/elasticsearch/elasticsearch.yml
 systemctl daemon-reload
 systemctl enable elasticsearch.service
 systemctl start elasticsearch.service
+
+#Config Kibana
+kibanayaml="server.port: 5601
+server.host: '0.0.0.0'
+
+elasticsearch.hosts: ['http://localhost:9200']
+elasticsearch.username: 'elastic'
+elasticsearch.password: 'password'
+"
+echo "$kibanayaml" > /etc/kibana/kibana.yml
 
 # Install Logstash
 rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
@@ -88,7 +89,9 @@ output.logstash:
 EOF
 
 
-# Enable and start Logstash and Filebeat services
+# Enable and start Kibana, Logstash and Filebeat services
+systemctl enable kibana.service
+systemctl start kibana.service
 systemctl enable logstash.service
 systemctl start logstash.service
 systemctl enable filebeat.service
@@ -98,5 +101,7 @@ systemctl start filebeat.service
 
 #Insert log
 echo "Hello World" > /etc/logstash/inputHW.log
+chmod 777 /var/log/inputHW.log
+
 #Setup Output File
 touch /etc/logstash/outputHW.log
