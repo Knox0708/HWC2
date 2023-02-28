@@ -22,6 +22,20 @@ type=rpm-md
 EOF
 yum install -y elasticsearch
 
+#Install Kibana
+yum install kibana -y
+
+
+kibanayaml="server.port: 5601
+server.host: 'localhost'
+
+elasticsearch.hosts: ['http://localhost:9200']
+elasticsearch.username: '"hwc"'
+elasticsearch.password: '""'
+"
+echo "$kibanayaml" > /etc/kibana/kibana.yml
+
+
 # Configure Elasticsearch
 sed -i 's/#network.host: 192.168.0.1/network.host: 0.0.0.0/g' /etc/elasticsearch/elasticsearch.yml
 systemctl daemon-reload

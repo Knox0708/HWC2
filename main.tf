@@ -86,6 +86,7 @@ resource "aws_security_group" "Default" {
     protocol    = "icmp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  
   #outbound rules
   egress {
     from_port   = 0
