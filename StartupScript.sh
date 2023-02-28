@@ -53,7 +53,7 @@ filebeat.inputs:
   paths:
     - /etc/logstash/inputHW.log
 output.logstash:
-  hosts: ["172.31.13.104:5044"]
+  hosts: ["localhost:5044"]
 EOF
 
 # Enable and start Logstash and Filebeat services
