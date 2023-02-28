@@ -23,8 +23,8 @@ provider aws {
 
 
 resource "aws_instance" "example" {
-  ami           = "ami-0dfcb1ef8550277af"
-  instance_type = "t2.micro"
+  ami           = "ami-0aa7d40eeae50c9a9"
+  instance_type = "t3.medium"
   key_name = "tf-key-pair"
   user_data = file("StartupScript.sh")
   vpc_security_group_ids = [aws_security_group.Default.id]
