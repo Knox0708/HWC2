@@ -29,6 +29,7 @@ yum install kibana -y
 
 # Configure Elasticsearch
 sed -i 's/#network.host: 192.168.0.1/network.host: 0.0.0.0/g' /etc/elasticsearch/elasticsearch.yml
+sed -i 's/#discovery.seed_hosts: \[\"127.0.0.1\",\"\[::1\]\"\]/discovery.seed_hosts: ["localhost"]/' /etc/elasticsearch/elasticsearch.yml
 systemctl daemon-reload
 systemctl enable elasticsearch.service
 systemctl start elasticsearch.service
