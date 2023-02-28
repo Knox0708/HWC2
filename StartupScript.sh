@@ -25,11 +25,16 @@ yum install -y elasticsearch
 #Install Kibana
 yum install kibana -y
 
-
+# Get private IP address of the instance
+PRIVATE_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
 
 # Configure Elasticsearch
 sed -i 's/#network.host: 192.168.0.1/network.host: 0.0.0.0/g' /etc/elasticsearch/elasticsearch.yml
-sed -i 's/#discovery.seed_hosts: \[\"127.0.0.1\",\"\[::1\]\"\]/discovery.seed_hosts: ["localhost"]/' /etc/elasticsearch/elasticsearch.yml
+sed -i "/^#cluster.initial_master_nodes:/a cluster.initial_master_nodes: ['$(hostname -f)']" /etc/elasticsearch/elasticsearch.yml
+
+
+# sed -i 's/#discovery.seed_hosts: \[\"127.0.0.1\",\"\[::1\]\"\]/discovery.seed_hosts: ["localhost"]/' /etc/elasticsearch/elasticsearch.yml
+# echo "discovery.type: single-node" >> /etc/elasticsearch/elasticsearch.yml
 systemctl daemon-reload
 systemctl enable elasticsearch.service
 systemctl start elasticsearch.service
@@ -43,6 +48,11 @@ elasticsearch.username: 'elastic'
 elasticsearch.password: 'password'
 "
 echo "$kibanayaml" > /etc/kibana/kibana.yml
+
+# Enable and start Kibana service
+systemctl daemon-reload
+systemctl enable kibana.service
+systemctl start kibana.service
 
 # Install Logstash
 rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
@@ -90,9 +100,7 @@ output.logstash:
 EOF
 
 
-# Enable and start Kibana, Logstash and Filebeat services
-systemctl enable kibana.service
-systemctl start kibana.service
+# Enable and start Logstash and Filebeat services
 systemctl enable logstash.service
 systemctl start logstash.service
 systemctl enable filebeat.service
