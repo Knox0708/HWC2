@@ -71,6 +71,14 @@ resource "aws_security_group" "Default" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+      ingress {
+    description = "Kibana"
+    from_port   = 5601
+    to_port     = 5601
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
    
     ingress {
     description = "FBeat"
