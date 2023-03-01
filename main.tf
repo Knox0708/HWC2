@@ -22,7 +22,7 @@ provider aws {
 }
 
 
-resource "aws_instance" "example" {
+resource "aws_instance" "Server" {
   ami           = "ami-0aa7d40eeae50c9a9"
   instance_type = "t3.medium"
   key_name = "tf-key-pair"
@@ -31,7 +31,7 @@ resource "aws_instance" "example" {
   
 
    tags = {
-    Name = "ExampleAppServerInstance"
+    Name = "AppServerInstance"
   }
 
 
