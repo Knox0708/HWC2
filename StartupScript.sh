@@ -32,6 +32,28 @@ PRIVATE_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
 sed -i 's/#network.host: 192.168.0.1/network.host: 0.0.0.0/g' /etc/elasticsearch/elasticsearch.yml
 sed -i "/^#cluster.initial_master_nodes:/a cluster.initial_master_nodes: ['$(hostname -f)']" /etc/elasticsearch/elasticsearch.yml
 
+# Set up ILM policy to remove replicas after 1 day
+cat <<EOF > /etc/elasticsearch/ilm_policy.json
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "rollover": {
+            "max_age": "1d",
+            "max_size": "50gb"
+          }
+        }
+      },
+      "delete": {
+        "actions": {
+          "delete": {}
+        }
+      }
+    }
+  }
+}
+EOF
 
 # sed -i 's/#discovery.seed_hosts: \[\"127.0.0.1\",\"\[::1\]\"\]/discovery.seed_hosts: ["localhost"]/' /etc/elasticsearch/elasticsearch.yml
 # echo "discovery.type: single-node" >> /etc/elasticsearch/elasticsearch.yml
