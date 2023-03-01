@@ -99,10 +99,12 @@ input {
     port => 5044
   }
 }
+
 filter {
   grok {
-    match => { "message" => "%{GREEDYDATA:Hello World}" }
-  }
+    match => { "message" => "Hello World" }
+}
+
 }
 output {
   elasticsearch {
