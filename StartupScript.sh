@@ -92,8 +92,18 @@ yum install -y logstash
 curl -L -O https://artifacts.elastic.co/downloads/beats/filebeat/filebeat-7.14.1-x86_64.rpm
 rpm -vi filebeat-7.14.1-x86_64.rpm
 
+# Configure Pipelines
+cat << EOF > /etc/logstash/pipelines.yml
+- pipeline.id: logs1
+  path.config: "/etc/logstash/conf.d/logs1.conf"
+- pipeline.id: logs2
+  path.config: "/etc/logstash/conf.d/logs2.conf"
+- pipeline.id: logs3
+  path.config: "/etc/logstash/conf.d/logs3.conf"
+EOF
+
 # Configure Logstash and Filebeat
-cat << EOF > /etc/logstash/conf.d/logstash.conf
+cat << EOF > /etc/logstash/conf.d/logs1.conf
 input {
   beats {
     port => 5044
@@ -113,6 +123,48 @@ output {
 }
 EOF
 
+cat << EOF > /etc/logstash/conf.d/logs2.conf
+input {
+  beats {
+    port => 5044
+  }
+}
+
+filter {
+  grok {
+    match => { "message" => "Hello World" }
+}
+
+}
+output {
+  elasticsearch {
+    hosts => ["localhost:9200"]
+  }
+}
+EOF
+
+cat << EOF > /etc/logstash/conf.d/logs3.conf
+input {
+  beats {
+    port => 5044
+  }
+}
+
+filter {
+  grok {
+    match => { "message" => "Hello World" }
+}
+
+}
+output {
+  elasticsearch {
+    hosts => ["localhost:9200"]
+  }
+}
+EOF
+
+
+#Filebeat yml
 cat << EOF > /etc/filebeat/filebeat.yml
 filebeat.inputs:
 - type: filestream
