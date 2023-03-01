@@ -29,29 +29,35 @@ yum install kibana -y
 PRIVATE_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
 
 # Configure Elasticsearch
-elasticyaml="action.auto_create_index: .monitoring*,.watches,.triggered_watches,.watcher-history*,.ml*
-path.data: /var/lib/elasticsearch
-path.logs: /var/log/elasticsearch
-network.host: 0.0.0.0
-http.port: 9200
-xpack.security.enabled: false
-xpack.security.enrollment.enabled: false
-xpack.security.http.ssl:
-  enabled: false
-  keystore.path: certs/http.p12
-xpack.security.transport.ssl:
-  enabled: false
-  verification_mode: certificate
-  keystore.path: certs/transport.p12
-  truststore.path: certs/transport.p12
-cluster.initial_master_nodes: [$(hostname)]
-http.host: 0.0.0.0
-indices.lifecycle.poll_interval: 10s
-indices.lifecycle.removal_of_replicas.after_days: 1"
-echo "$elasticyaml" > /etc/elasticsearch/elasticsearch.yml
+sed -i 's/#network.host: 192.168.0.1/network.host: 0.0.0.0/g' /etc/elasticsearch/elasticsearch.yml
+sed -i "/^#cluster.initial_master_nodes:/a cluster.initial_master_nodes: ['$(hostname -f)']" /etc/elasticsearch/elasticsearch.yml
 
+# Set up ILM policy to remove replicas after 1 day
+cat <<EOF > /etc/elasticsearch/ilm_policy.json
+{
+  "policy": {
+    "phases": {
+      "hot": {
+        "actions": {
+          "rollover": {
+            "max_age": "1d",
+            "max_size": "50gb"
+          }
+        }
+      },
+      "delete": {
+        "actions": {
+          "delete": {}
+        }
+      }
+    }
+  }
+}
+EOF
 
-
+# sed -i 's/#discovery.seed_hosts: \[\"127.0.0.1\",\"\[::1\]\"\]/discovery.seed_hosts: ["localhost"]/' /etc/elasticsearch/elasticsearch.yml
+# echo "discovery.type: single-node" >> /etc/elasticsearch/elasticsearch.yml
+systemctl daemon-reload
 systemctl enable elasticsearch.service
 systemctl start elasticsearch.service
 
