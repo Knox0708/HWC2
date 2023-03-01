@@ -87,13 +87,13 @@ resource "aws_security_group" "Default" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-    ingress {
-    description = "Allow all incoming ICMP IPv4 traffic"
-    from_port   = -1
-    to_port     = -1
-    protocol    = "icmp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  #   ingress {
+  #   description = "Allow all incoming ICMP IPv4 traffic"
+  #   from_port   = -1
+  #   to_port     = -1
+  #   protocol    = "icmp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
   
   #outbound rules
   egress {
