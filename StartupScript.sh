@@ -99,11 +99,13 @@ input {
     port => 5044
   }
 }
-# filter {
-#   grok {
-#     match => { "message" => "%{GREEDYDATA:Hello World}" }
-#   }
-#}
+
+filter {
+  grok {
+    match => { "message" => "Hello World" }
+}
+
+}
 output {
   elasticsearch {
     hosts => ["localhost:9200"]
