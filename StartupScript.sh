@@ -22,11 +22,37 @@ type=rpm-md
 EOF
 yum install -y elasticsearch
 
+#Install Kibana
+yum install kibana -y
+
+# Get private IP address of the instance
+PRIVATE_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
+
 # Configure Elasticsearch
-sed -i 's/#network.host: 192.168.0.1/network.host: localhost/g' /etc/elasticsearch/elasticsearch.yml
+sed -i 's/#network.host: 192.168.0.1/network.host: 0.0.0.0/g' /etc/elasticsearch/elasticsearch.yml
+sed -i "/^#cluster.initial_master_nodes:/a cluster.initial_master_nodes: ['$(hostname -f)']" /etc/elasticsearch/elasticsearch.yml
+
+
+# sed -i 's/#discovery.seed_hosts: \[\"127.0.0.1\",\"\[::1\]\"\]/discovery.seed_hosts: ["localhost"]/' /etc/elasticsearch/elasticsearch.yml
+# echo "discovery.type: single-node" >> /etc/elasticsearch/elasticsearch.yml
 systemctl daemon-reload
 systemctl enable elasticsearch.service
 systemctl start elasticsearch.service
+
+#Config Kibana
+kibanayaml="server.port: 5601
+server.host: '0.0.0.0'
+
+elasticsearch.hosts: ['http://localhost:9200']
+elasticsearch.username: 'elastic'
+elasticsearch.password: 'password'
+"
+echo "$kibanayaml" > /etc/kibana/kibana.yml
+
+# Enable and start Kibana service
+systemctl daemon-reload
+systemctl enable kibana.service
+systemctl start kibana.service
 
 # Install Logstash
 rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
@@ -84,5 +110,7 @@ systemctl start filebeat.service
 
 #Insert log
 echo "Hello World" > /etc/logstash/inputHW.log
+chmod 777 /var/log/inputHW.log
+
 #Setup Output File
 touch /etc/logstash/outputHW.log
